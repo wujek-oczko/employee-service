@@ -1,4 +1,6 @@
 package com.wujq.pay.employee;
+
+import javax.validation.Valid;
 import com.wujq.pay.employee.exceptions.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class EmployeeController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> createEmployee(@RequestBody Employee employee) {
+	public ResponseEntity<Object> createEmployee(@Valid @RequestBody Employee employee) {
 		Employee savedEmployee = employeeRepository.save(employee);
 
 		return new ResponseEntity<>(savedEmployee, HttpStatus.OK);

@@ -1,6 +1,7 @@
 package com.wujq.pay.employee;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Address {
@@ -31,7 +32,25 @@ public class Address {
     @Column
     private String country;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Employee.class)
+    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
+    private Employee employee;
+
+
     public Address() {
+    }
+
+    public Address(Long id, AddressType addressType, int homeNumber, String street, String city, String province, String zip, String country, @NotNull Employee employee) {
+        this.id = id;
+        this.addressType = addressType;
+        this.homeNumber = homeNumber;
+        this.street = street;
+        this.city = city;
+        this.province = province;
+        this.zip = zip;
+        this.country = country;
+        this.employee = employee;
     }
 
     public Long getId() {
@@ -54,8 +73,8 @@ public class Address {
         return homeNumber;
     }
 
-    public void setHomeNumber(int number) {
-        this.homeNumber = number;
+    public void setHomeNumber(int homeNumber) {
+        this.homeNumber = homeNumber;
     }
 
     public String getStreet() {
@@ -96,5 +115,9 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }

@@ -1,14 +1,18 @@
 package com.wujq.pay.employee;
 
 
+import com.wujq.pay.employee.validators.AgeConstraint;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column
@@ -18,9 +22,10 @@ public class Employee {
     private String lastName;
 
     @Column
+    @AgeConstraint(message = "Employee need to be an adult")
     private Integer age;
 
-    @Column
+    @Column()
     private String PESEL;
 
     @OneToMany(

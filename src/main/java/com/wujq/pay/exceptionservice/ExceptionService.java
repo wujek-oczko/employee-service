@@ -4,6 +4,7 @@ import com.wujq.pay.employee.exceptions.EmployeeNotFoundException;
 import com.wujq.pay.employee.exceptions.PeselConflictException;
 import com.wujq.pay.employee.exceptions.TooManyDirectorsException;
 import com.wujq.pay.employee.exceptions.TooManySubordinatesException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,13 +18,6 @@ import java.util.Date;
 @ControllerAdvice
 @RestController
 public class ExceptionService extends ResponseEntityExceptionHandler {
-
-  @ExceptionHandler(Exception.class)
-  public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
-    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
-    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-  }
 
   @ExceptionHandler(EmployeeNotFoundException.class)
   public final ResponseEntity<ExceptionResponse> handleUserNotFoundException(EmployeeNotFoundException ex, WebRequest request) {
@@ -51,6 +45,20 @@ public class ExceptionService extends ResponseEntityExceptionHandler {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
             request.getDescription(false));
     return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public final ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+            request.getDescription(false));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+            request.getDescription(false));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
 }
