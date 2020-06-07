@@ -23,12 +23,12 @@ public class EmployeeController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Employee> retrieveEmployee(@PathVariable long id) {
-		Optional<Employee> student = employeeRepository.findById(id);
+		Optional<Employee> employee = employeeRepository.findById(id);
 
-		if (!student.isPresent())
+		if (!employee.isPresent())
 			throw new EmployeeNotFoundException("id-" + id);
 
-		Employee resource = student.get();
+		Employee resource = employee.get();
 		return new ResponseEntity<>(resource, HttpStatus.OK);
 
 	}
@@ -49,9 +49,9 @@ public class EmployeeController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateEmployee(@RequestBody Employee employee, @PathVariable long id) {
 
-		Optional<Employee> studentOptional = employeeRepository.findById(id);
+		Optional<Employee> employeeOptional = employeeRepository.findById(id);
 
-		if (!studentOptional.isPresent())
+		if (!employeeOptional.isPresent())
 			return ResponseEntity.notFound().build();
 
 		employee.setId(id);

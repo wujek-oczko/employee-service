@@ -31,6 +31,7 @@ public class Employee {
     private List<Address> addressList = new ArrayList<>();
 
     @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
     private EmployeeRole employeeRole;
 
 //-> pracownik musi zawierać PESEL
