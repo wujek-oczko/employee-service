@@ -2,10 +2,11 @@ package com.wujq.pay.employee;
 
 
 import com.wujq.pay.employee.validators.AgeConstraint;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,17 +17,20 @@ public class Employee {
     private Long id;
 
     @Column
+    @Size(min = 2)
     private String name;
 
     @Column
+    @Size(min = 2)
     private String lastName;
 
     @Column
     @AgeConstraint(message = "Employee need to be an adult")
     private Integer age;
 
-    @Column()
-    private String PESEL;
+    @Column
+    @Size(min = 11, max = 11, message = "PESEL must be 11 digits long")
+    private String pesel;
 
     @OneToMany(
             cascade = CascadeType.ALL,
@@ -35,7 +39,8 @@ public class Employee {
 	@JoinColumn(name = "employee_id")
     private List<Address> addressList = new ArrayList<>();
 
-    @Column(nullable = true)
+    @NotNull(message = "Role cannot be null")
+    @Column
     @Enumerated(EnumType.STRING)
     private EmployeeRole employeeRole;
 
@@ -49,12 +54,12 @@ public class Employee {
         super();
     }
 
-    public Employee(Long id, String name, String lastName, Integer age, String PESEL, List<Address> addressList, EmployeeRole employeeRole) {
+    public Employee(Long id, String name, String lastName, Integer age, String pesel, List<Address> addressList, EmployeeRole employeeRole) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.age = age;
-        this.PESEL = PESEL;
+        this.pesel = pesel;
         this.addressList = addressList;
         this.employeeRole = employeeRole;
     }
@@ -91,12 +96,12 @@ public class Employee {
         this.age = age;
     }
 
-    public String getPESEL() {
-        return PESEL;
+    public String getPesel() {
+        return pesel;
     }
 
-    public void setPESEL(String PESEL) {
-        this.PESEL = PESEL;
+    public void setPesel(String PESEL) {
+        this.pesel = PESEL;
     }
 
     public List<Address> getAddressList() {
